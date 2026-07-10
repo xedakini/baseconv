@@ -314,6 +314,12 @@ const aliasmap = [_] struct{String, String, ?SymbolSetProperties} { //key, allma
     .{"64pad", "64mime", .{.do_pad=true}}, .{"64mimepad", "64mime", .{.do_pad=true}},
     .{"64urlpad", "64url", .{.do_pad=true}},
     .{"btoa", "ascii85", .{.zeroes_compress='z', .spaces_compress='y', .eof='x'}},
+    //aliases based on rfc9741 "control operators":
+    .{"hexlc", "16",null},  .{"hexuc", "16", .{.use_upper=true}},
+    .{"b32", "32", null},  .{"h32", "32hex", null},
+    .{"b45", "qr45", null},
+    .{"b64u", "64url", null},  .{"b64c", "64mime", null},
+    .{"b64c-sloppy", "64mime", null},  .{"b64u-sloppy", "64url", null}, // we ignore = padding altogether, so "sloppy"ness is meaningless
 };
 
 const MultibaseEntry = struct {u8, String, bool}; //key, allmap_reference, do_upper
