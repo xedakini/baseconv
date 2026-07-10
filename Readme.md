@@ -32,7 +32,7 @@ As reported by `baseconv -l` :
   - 32 ([rfc4648](https://www.rfc-editor.org/info/rfc4648/) base32)
   - 32hex ([rfc4648](https://www.rfc-editor.org/info/rfc4648/) base32hex)
   - z32 ([z-base-32](https://philzimmermann.com/docs/human-oriented-base-32-encoding.txt))
-  - qr45 (QR code oriented base45)
+  - qr45 (QR code oriented [base45](https://www.rfc-editor.org/info/rfc9285/))
   - [base62glowfall](https://github.com/glowfall/base62) (a variadic length encoding version of base62)
   - 64mime ([base64](https://www.rfc-editor.org/info/rfc4648/) - mime variant)
   - 64url ([base64](https://www.rfc-editor.org/info/rfc4648/) - url variant)
