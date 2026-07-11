@@ -249,9 +249,9 @@ const IDENTITY = init_identity: {
     for (0..a.len) |i|  a[i] = i;
     break :init_identity a;
 };
-const U = ascii.uppercase;
-const L = ascii.lowercase;
-const D = "0123456789";
+const U = IDENTITY['A'..'Z'+1];
+const L = IDENTITY['a'..'z'+1];
+const D = IDENTITY['0'..'9'+1];
 const DLU = D++L++U;
 const DUL = D++U++L;
 const ULD = U++L++D;
@@ -265,7 +265,7 @@ const allmap = [_]Self {
     Self.init("32", L++"234567", "rfc4648 base32", .BitShifter, .{.pad_char='=',}), //avoids "confusing" digits
     Self.init("32hex", DLU[0..32], "rfc4648 base32hex", .BitShifter, .{.pad_char='=',}), //traditional mapping
     Self.init("z32", "ybndrfg8ejkmcpqxot1uwisza345h769", "z-base-32", .BitShifter, .{}), //per https://philzimmermann.com/docs/human-oriented-base-32-encoding.txt
-    Self.init("qr45", DUL[0..36]++" $%*+-./:", "QR code oriented base45", .Chunker, .{.chunk_syms=3, .reverse=true}), //used for compact QR coding of binary data
+    Self.init("qr45", D++U++" $%*+-./:", "QR code oriented base45 (RFC 9285)", .Chunker, .{.chunk_syms=3, .reverse=true}), //used for compact QR coding of binary data
     Self.init("base58xrp", "rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz", "base58 - xrp/ripple", .Bignum, .{}),//where is this documented?
     Self.init("base58btc", "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz", "base58 - bitcoin", .Bignum, .{}),//where is this documented?
     // base58flickr: alias to base58btc; where is this documented?
@@ -314,6 +314,12 @@ const aliasmap = [_] struct{String, String, ?SymbolSetProperties} { //key, allma
     .{"64pad", "64mime", .{.do_pad=true}}, .{"64mimepad", "64mime", .{.do_pad=true}},
     .{"64urlpad", "64url", .{.do_pad=true}},
     .{"btoa", "ascii85", .{.zeroes_compress='z', .spaces_compress='y', .eof='x'}},
+    //aliases based on rfc9741 "control operators":
+    .{"hexlc", "16",null},  .{"hexuc", "16", .{.use_upper=true}},
+    .{"b32", "32", null},  .{"h32", "32hex", null},
+    .{"b45", "qr45", null},
+    .{"b64u", "64url", null},  .{"b64c", "64mime", null},
+    .{"b64c-sloppy", "64mime", null},  .{"b64u-sloppy", "64url", null}, // we ignore = padding altogether, so "sloppy"ness is meaningless
 };
 
 const MultibaseEntry = struct {u8, String, bool}; //key, allmap_reference, do_upper

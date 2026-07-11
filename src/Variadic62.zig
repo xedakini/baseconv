@@ -118,7 +118,7 @@ fn syms_to_bytes(self: *Self, input: []const u8) !void {
             // would like to use "16-self.nbits" (which will safely be within u4 range),
             // but the compiler is balking; rewrite it in a less clear way that means
             // the same thing to keep the compiler's type-checking happy *sigh*
-            const v = self.bitbuf >> (1 +% ~self.nbits);
+            const v = self.bitbuf >> (-% self.nbits);
             try self.downstream.writeByte(@truncate(v));
             self.nbits -= BYTEBITS;
         }
